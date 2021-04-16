@@ -2,11 +2,9 @@ ARG IMAGE=amd64/debian:10.4-slim
 
 FROM $IMAGE as builder
 
-MAINTAINER datarhei <info@datarhei.org>
-
 ARG NASM_VERSION=2.14.02
 ARG LAME_VERSION=3.100
-ARG FFMPEG_VERSION=4.3.1
+ARG FFMPEG_VERSION=4.3.2
 ARG NGINX_VERSION=1.18.0
 ARG NGINXRTMP_VERSION=1.2.1
 ARG NODE_VERSION=12.16.3
@@ -24,7 +22,10 @@ RUN apt-get update && \
         libssl-dev \
         zlib1g-dev \
         libasound2-dev \
-        build-essential
+        build-essential \
+        unzip \
+        tclsh \
+        cmake
 
 # nasm
 RUN mkdir -p /dist && cd /dist && \
@@ -53,6 +54,16 @@ RUN mkdir -p /dist && cd /dist && \
     make -j$(nproc) && \
     make install
 
+# libsrt
+RUN mkdir -p /dist && cd /dist && \
+    curl -OL https://codeload.github.com/Haivision/srt/zip/refs/heads/master && \
+    unzip master && \
+    cd srt-master && \
+    ./configure && \
+    make && \
+    make install && \
+    ldconfig
+
 # ffmpeg && patch
 COPY ./contrib/ffmpeg /dist/restreamer/contrib/ffmpeg
 
@@ -75,6 +86,7 @@ RUN mkdir -p /dist && cd /dist && \
         --enable-postproc \
         --enable-small \
         --enable-static \
+        --enable-libsrt \
         --disable-debug \
         --disable-doc \
         --disable-shared && \
@@ -133,11 +145,12 @@ RUN cd /restreamer && \
     npm prune --production && \
     apt-get remove -y \
         git \
+        unzip \
+        cmake \
         curl && \
     apt autoremove -y
 
 EXPOSE 8080
-EXPOSE 8181
 
 VOLUME ["/restreamer/db"]
 

@@ -195,7 +195,7 @@ window.angular.module('Main').controller('mainController',
         }
 
         $scope.startStream = (streamType) => {
-            const inputRegex = /^(rtmp(s|t)?|rtsp|https?):\/\//;
+            const inputRegex = /^(rtmp(s|t)?|rtsp|https?|srt):\/\//;
             const outputRegexRTMP = /^rtmp(s|t)?:\/\//;
             const outputRegexHLS = /^https?:\/\/.*\.m3u8/;
 
