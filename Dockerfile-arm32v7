@@ -2,10 +2,8 @@ ARG IMAGE=arm32v7/debian:10.4-slim
 
 FROM $IMAGE as builder
 
-MAINTAINER datarhei <info@datarhei.org>
-
 ARG LAME_VERSION=3.100
-ARG FFMPEG_VERSION=4.3.1
+ARG FFMPEG_VERSION=4.3.2
 ARG NGINX_VERSION=1.18.0
 ARG NGINXRTMP_VERSION=1.2.1
 ARG NODE_VERSION=12.16.3
@@ -17,17 +15,20 @@ ENV SRC="/usr/local/" \
 RUN apt-get update && \
     apt-get install -y \
         pkg-config \
-        curl \
+        wget \
         libpcre3-dev \
         libtool \
         libssl-dev \
         zlib1g-dev \
         libasound2-dev \
-        build-essential
+        build-essential \
+        unzip \
+        tclsh \
+        cmake
 
 # x264
 RUN mkdir -p /dist && cd /dist && \
-    curl -OL https://code.videolan.org/videolan/x264/-/archive/stable/x264-stable.tar.bz2 && \
+    wget https://code.videolan.org/videolan/x264/-/archive/stable/x264-stable.tar.bz2 && \
     tar -xvj -f x264-stable.tar.bz2 && \
     cd x264-stable && \
     ./configure --prefix="${SRC}" --bindir="${SRC}/bin" --enable-shared && \
@@ -36,18 +37,28 @@ RUN mkdir -p /dist && cd /dist && \
 
 # libmp3lame
 RUN mkdir -p /dist && cd /dist && \
-    curl -OL "https://downloads.sourceforge.net/project/lame/lame/${LAME_VERSION}/lame-${LAME_VERSION}.tar.gz" && \
+    wget "https://downloads.sourceforge.net/project/lame/lame/${LAME_VERSION}/lame-${LAME_VERSION}.tar.gz" && \
     tar -xvz -f lame-${LAME_VERSION}.tar.gz && \
     cd lame-${LAME_VERSION} && \
     ./configure --prefix="${SRC}" --bindir="${SRC}/bin" --disable-static && \
     make -j$(nproc) && \
     make install
 
+# libsrt
+RUN mkdir -p /dist && cd /dist && \
+    wget https://codeload.github.com/Haivision/srt/zip/refs/heads/master && \
+    unzip master && \
+    cd srt-master && \
+    ./configure && \
+    make && \
+    make install && \
+    ldconfig
+
 # ffmpeg && patch
 COPY ./contrib/ffmpeg /dist/restreamer/contrib/ffmpeg
 
 RUN mkdir -p /dist && cd /dist && \
-    curl -OL "https://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz" && \
+    wget "https://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz" && \
     tar -xvz -f ffmpeg-${FFMPEG_VERSION}.tar.gz && \
     cd ffmpeg-${FFMPEG_VERSION} && \
     patch -p1 < /dist/restreamer/contrib/ffmpeg/bitrate.patch && \
@@ -65,6 +76,7 @@ RUN mkdir -p /dist && cd /dist && \
         --enable-postproc \
         --enable-small \
         --enable-static \
+        --enable-libsrt \
         --disable-debug \
         --disable-doc \
         --disable-shared && \
@@ -73,9 +85,9 @@ RUN mkdir -p /dist && cd /dist && \
 
 # nginx-rtmp
 RUN mkdir -p /dist && cd /dist && \
-    curl -OL "https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz" && \
+    wget "https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz" && \
     tar -xvz -f "nginx-${NGINX_VERSION}.tar.gz" && \
-    curl -OL "https://github.com/arut/nginx-rtmp-module/archive/v${NGINXRTMP_VERSION}.tar.gz" && \
+    wget "https://github.com/arut/nginx-rtmp-module/archive/v${NGINXRTMP_VERSION}.tar.gz" && \
     tar -xvz -f "v${NGINXRTMP_VERSION}.tar.gz" && \
     sed -i"" -e '/case ESCAPE:/i /* fall through */' nginx-rtmp-module-${NGINXRTMP_VERSION}/ngx_rtmp_eval.c && \
     cd nginx-${NGINX_VERSION} && \
@@ -85,7 +97,7 @@ RUN mkdir -p /dist && cd /dist && \
 
 # node.js
 RUN mkdir -p /dist && cd /dist && \
-    curl -OL "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-armv7l.tar.xz" && \
+    wget "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-armv7l.tar.xz" && \
     tar -xvJ -f "node-v${NODE_VERSION}-linux-armv7l.tar.xz" && \
     cd node-v${NODE_VERSION}-linux-armv7l && \
     cp -R bin /usr/local && \
@@ -94,7 +106,7 @@ RUN mkdir -p /dist && cd /dist && \
 RUN rm -r /dist && \
     apt-get remove -y \
         pkg-config \
-        curl \
+        wget \
         libpcre3-dev \
         libtool \
         libssl-dev \
@@ -135,11 +147,10 @@ RUN cd /restreamer && \
     npm prune --production && \
     apt-get remove -y \
         git \
-        curl && \
+        wget && \
     apt autoremove -y
 
 EXPOSE 8080
-EXPOSE 8181
 
 VOLUME ["/restreamer/db"]
 
