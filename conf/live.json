@@ -132,7 +132,7 @@
             "video": {
                  "outputOptions": [
                     "-map_metadata -1",
-                    "-metadata application=datarhei/Restreamer"
+                    "-metadata application=vidterra/Restreamer"
                 ]
             },
             "srt": {
@@ -212,7 +212,7 @@
             "ip": "localhost",
             "rtmp_port": "1935",
             "rtmp_hls_path": "/hls/",
-            "http_port": "8080",
+            "http_port": "8070",
             "http_health_path": "/ping"
         }
     },

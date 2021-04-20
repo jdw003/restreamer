@@ -150,7 +150,7 @@ RUN cd /restreamer && \
         curl && \
     apt autoremove -y
 
-EXPOSE 8080
+EXPOSE 8070
 
 VOLUME ["/restreamer/db"]
 
