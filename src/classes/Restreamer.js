@@ -1061,7 +1061,7 @@ Restreamer.data = {
             autoplay: false,
             mute: false,
             statistics: false,
-            color: '#3daa48',
+            color: '#449f9f',
             logo: {
                 image: '',
                 position: 'bottom-right',

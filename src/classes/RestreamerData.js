@@ -107,7 +107,7 @@ class RestreamerData {
                             autoplay: false,
                             mute: false,
                             statistics: false,
-                            color: '#3daa48',
+                            color: '#449f9f',
                             logo: {
                                 image: '',
                                 position: 'bottom-right',
@@ -168,7 +168,7 @@ class RestreamerData {
                             autoplay: false,
                             mute: false,
                             statistics: false,
-                            color: '#3daa48',
+                            color: '#449f9f',
                             logo: {
                                 image: '',
                                 position: 'bottom-right',

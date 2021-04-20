@@ -45,7 +45,7 @@ hr {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color: #3daa48;
+    color: #449f9f;
     font-weight: 300;
 }
 
@@ -68,7 +68,7 @@ a:visited {
 }
 
 a:hover, a:active, a:focus {
-    color: #3daa48;
+    color: #449f9f;
     text-decoration: none;
 }
 
@@ -97,7 +97,7 @@ td {
 }
 
 .locales:hover, .locales:focus {
-    color: #3daa48;
+    color: #449f9f;
     text-decoration: none;
 }
 
@@ -108,8 +108,8 @@ td {
 }
 
 .btn-success {
-    background-color: #3d8142;
-    border-color: #3d8142;
+    background-color: #449f9f;
+    border-color: #449f9f;
 }
 
 .btn-danger {
@@ -151,7 +151,7 @@ td {
 }
 
 .input:hover, .input:active, .input:active:hover, .input:active:focus, .input:link, .input:focus {
-    border-color: #3daa48;
+    border-color: #449f9f;
 }
 
 .select {
@@ -265,7 +265,7 @@ pre {
 }
 
 .green {
-    color: #3daa48;
+    color: #449f9f;
 }
 
 .color-picker {
