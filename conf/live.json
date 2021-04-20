@@ -135,6 +135,11 @@
                     "-metadata application=datarhei/Restreamer"
                 ]
             },
+            "srt": {
+                "outputOptions":[
+                    "-f mpegts"
+                ]
+            },
             "rtmp": {
                 "outputOptions": [
                     "-f flv"

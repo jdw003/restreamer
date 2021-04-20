@@ -195,9 +195,10 @@ window.angular.module('Main').controller('mainController',
         }
 
         $scope.startStream = (streamType) => {
-            const inputRegex = /^(rtmp(s|t)?|rtsp|https?|srt):\/\//;
+            const inputRegex = /^(rtmp(s|t)?|rtsp|https?|srt|udp):\/\//;
             const outputRegexRTMP = /^rtmp(s|t)?:\/\//;
             const outputRegexHLS = /^https?:\/\/.*\.m3u8/;
+            const outputRegexSRT = /^srt:\/\//;
 
             var optionalOutput = '';
             if($scope.activateOptionalOutput === true) {
@@ -212,6 +213,9 @@ window.angular.module('Main').controller('mainController',
                 }
                 else if($scope.reStreamerData.options.output.type == 'hls') {
                     $scope.optionalOutputInputInvalid = !outputRegexHLS.test(optionalOutput);
+                }
+                else if($scope.reStreamerData.options.output.type == 'srt') {
+                    $scope.optionalOutputInputInvalid = !outputRegexSRT.test(optionalOutput);
                 }
 
                 if($scope.optionalOutputInputInvalid) {

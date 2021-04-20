@@ -725,7 +725,10 @@ class Restreamer {
             Restreamer.addStreamOptions(command, 'global', null);
             Restreamer.addStreamOptions(command, 'video', null);
 
-            if(Restreamer.data.options.output.type == 'hls') {
+            if(Restreamer.data.options.output.type == 'srt') {
+                Restreamer.addStreamOptions(command, 'srt', Restreamer.data.options.output.srt);
+            }
+            else if(Restreamer.data.options.output.type == 'hls') {
                 Restreamer.addStreamOptions(command, 'hls', Restreamer.data.options.output.hls);
             }
             else {
@@ -1073,7 +1076,8 @@ Restreamer.data = {
                 time: '2',
                 listSize: '10',
                 timeout: '10'
-            }
+            },
+            srt: {}
         }
     },
     states: {
