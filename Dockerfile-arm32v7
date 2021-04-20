@@ -15,7 +15,7 @@ ENV SRC="/usr/local/" \
 RUN apt-get update && \
     apt-get install -y \
         pkg-config \
-        wget \
+        curl \
         libpcre3-dev \
         libtool \
         libssl-dev \
@@ -28,7 +28,7 @@ RUN apt-get update && \
 
 # x264
 RUN mkdir -p /dist && cd /dist && \
-    wget https://code.videolan.org/videolan/x264/-/archive/stable/x264-stable.tar.bz2 && \
+    curl -OLk https://code.videolan.org/videolan/x264/-/archive/stable/x264-stable.tar.bz2 && \
     tar -xvj -f x264-stable.tar.bz2 && \
     cd x264-stable && \
     ./configure --prefix="${SRC}" --bindir="${SRC}/bin" --enable-shared && \
@@ -37,7 +37,7 @@ RUN mkdir -p /dist && cd /dist && \
 
 # libmp3lame
 RUN mkdir -p /dist && cd /dist && \
-    wget "https://downloads.sourceforge.net/project/lame/lame/${LAME_VERSION}/lame-${LAME_VERSION}.tar.gz" && \
+    curl -OLk "https://downloads.sourceforge.net/project/lame/lame/${LAME_VERSION}/lame-${LAME_VERSION}.tar.gz" && \
     tar -xvz -f lame-${LAME_VERSION}.tar.gz && \
     cd lame-${LAME_VERSION} && \
     ./configure --prefix="${SRC}" --bindir="${SRC}/bin" --disable-static && \
@@ -46,7 +46,7 @@ RUN mkdir -p /dist && cd /dist && \
 
 # libsrt
 RUN mkdir -p /dist && cd /dist && \
-    wget https://codeload.github.com/Haivision/srt/zip/refs/heads/master && \
+    curl -OLk https://codeload.github.com/Haivision/srt/zip/refs/heads/master && \
     unzip master && \
     cd srt-master && \
     ./configure && \
@@ -58,7 +58,7 @@ RUN mkdir -p /dist && cd /dist && \
 COPY ./contrib/ffmpeg /dist/restreamer/contrib/ffmpeg
 
 RUN mkdir -p /dist && cd /dist && \
-    wget "https://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz" && \
+    curl -OLk "https://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.gz" && \
     tar -xvz -f ffmpeg-${FFMPEG_VERSION}.tar.gz && \
     cd ffmpeg-${FFMPEG_VERSION} && \
     patch -p1 < /dist/restreamer/contrib/ffmpeg/bitrate.patch && \
@@ -85,9 +85,9 @@ RUN mkdir -p /dist && cd /dist && \
 
 # nginx-rtmp
 RUN mkdir -p /dist && cd /dist && \
-    wget "https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz" && \
+    curl -OLk "https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz" && \
     tar -xvz -f "nginx-${NGINX_VERSION}.tar.gz" && \
-    wget "https://github.com/arut/nginx-rtmp-module/archive/v${NGINXRTMP_VERSION}.tar.gz" && \
+    curl -OLk "https://github.com/arut/nginx-rtmp-module/archive/v${NGINXRTMP_VERSION}.tar.gz" && \
     tar -xvz -f "v${NGINXRTMP_VERSION}.tar.gz" && \
     sed -i"" -e '/case ESCAPE:/i /* fall through */' nginx-rtmp-module-${NGINXRTMP_VERSION}/ngx_rtmp_eval.c && \
     cd nginx-${NGINX_VERSION} && \
@@ -97,7 +97,7 @@ RUN mkdir -p /dist && cd /dist && \
 
 # node.js
 RUN mkdir -p /dist && cd /dist && \
-    wget "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-armv7l.tar.xz" && \
+    curl -OLk "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-armv7l.tar.xz" && \
     tar -xvJ -f "node-v${NODE_VERSION}-linux-armv7l.tar.xz" && \
     cd node-v${NODE_VERSION}-linux-armv7l && \
     cp -R bin /usr/local && \
@@ -106,7 +106,7 @@ RUN mkdir -p /dist && cd /dist && \
 RUN rm -r /dist && \
     apt-get remove -y \
         pkg-config \
-        wget \
+        curl \
         libpcre3-dev \
         libtool \
         libssl-dev \
@@ -147,7 +147,7 @@ RUN cd /restreamer && \
     npm prune --production && \
     apt-get remove -y \
         git \
-        wget && \
+        curl && \
     apt autoremove -y
 
 EXPOSE 8080
