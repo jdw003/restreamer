@@ -176,7 +176,8 @@ class RestreamerData {
                             }
                         },
                         output: {
-                            type: 'rtmp',
+                            type: 'srt',
+                            srt: {},
                             rtmp: {},
                             hls: {
                                 method: 'POST',

@@ -124,14 +124,19 @@
             "type": "object",
             "required": [
                 "type",
+                "srt",
                 "rtmp",
                 "hls"
             ],
             "properties": {
                 "type": {
                     "type": "string",
-                    "default": "rtmp",
-                    "pattern": "^(rtmp|hls)$"
+                    "default": "srt",
+                    "pattern": "^(rtmp|hls|srt)$"
+                },
+                "srt": {
+                  "type": "object",
+                  "default": {}
                 },
                 "rtmp": {
                     "type": "object",

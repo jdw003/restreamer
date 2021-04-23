@@ -1069,15 +1069,15 @@ Restreamer.data = {
             }
         },
         output: {
-            type: 'rtmp',
+            type: 'srt',
+            srt: {},
             rtmp: {},
             hls: {
                 method: 'POST',
                 time: '2',
                 listSize: '10',
                 timeout: '10'
-            },
-            srt: {}
+            }
         }
     },
     states: {
