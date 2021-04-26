@@ -37,7 +37,7 @@
             },
             "audio_preset_copy": {
                 "outputOptions": [
-                    "-map 0:{audioid}"
+                    "-map 0:a?"
                 ]
             },
             "audio_preset_encode": {
@@ -75,7 +75,7 @@
             "video_codec_copy": {
                 "inputOptions": [],
                 "outputOptions": [
-                    "-map 0:{videoid}",
+                    "-map 0:v?",
                     "-codec:v copy",
                     "-vsync 0",
                     "-copyts",
@@ -85,7 +85,7 @@
             "video_codec_h264": {
                 "inputOptions": [],
                 "outputOptions": [
-                    "-map 0:{videoid}",
+                    "-map 0:v?",
                     "-codec:v libx264",
                     "-preset:v {preset}",
                     "-b:v {bitrate}k",
@@ -110,7 +110,7 @@
             "video_codec_hevc": {
                 "inputOptions": [],
                 "outputOptions": [
-                    "-map 0:{videoid}",
+                    "-map 0:v?",
                     "-codec:v libx265",
                     "-preset:v {preset}",
                     "-b:v {bitrate}k",
@@ -137,7 +137,8 @@
             },
             "srt": {
                 "outputOptions":[
-                    "-f mpegts"
+                    "-f mpegts",
+                    "-map 0:d?"
                 ]
             },
             "rtmp": {

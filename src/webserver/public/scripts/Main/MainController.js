@@ -198,7 +198,7 @@ window.angular.module('Main').controller('mainController',
             const inputRegex = /^(rtmp(s|t)?|rtsp|https?|srt|udp):\/\//;
             const outputRegexRTMP = /^rtmp(s|t)?:\/\//;
             const outputRegexHLS = /^https?:\/\/.*\.m3u8/;
-            const outputRegexSRT = /^srt:\/\//;
+            const outputRegexSRT = /^(srt|udp):\/\//;
 
             var optionalOutput = '';
             if($scope.activateOptionalOutput === true) {
