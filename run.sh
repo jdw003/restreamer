@@ -8,6 +8,10 @@ if [ "$RS_DEBUG" = "true" ]; then
     export FFREPORT="file=/restreamer/src/webserver/public/debug/%p-%t.log:level=48"
 fi
 
+if [ "$RS_HTTP_PORT" != ""]; then
+    sed -i "s/\"http_port\": \"8070\"/\"http_port\": \"$RS_HTTP_PORT\"/" .conf/live.json
+fi
+
 DEVICE=${DEVICE:="default"}
 
 if [ "$DEVICE" = "raspi" ]; then
