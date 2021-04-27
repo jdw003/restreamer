@@ -718,25 +718,37 @@ class Restreamer {
             probePromise = Restreamer.probeStream(streamUrl, streamType)
         }
         else {  // repeat to optional output
-            command = new FfmpegCommand(rtmpUrl, {
-                stdoutLines: 1
-            });
-
-            Restreamer.addStreamOptions(command, 'global', null);
-            Restreamer.addStreamOptions(command, 'video', null);
-
             if(Restreamer.data.options.output.type == 'srt') {
+                command = new FfmpegCommand(process.env.RS_INPUTSTREAM, {
+                    stdoutLines: 1
+                });
+
+                Restreamer.addStreamOptions(command, 'global', null);
+                Restreamer.addStreamOptions(command, 'video', null);
                 Restreamer.addStreamOptions(command, 'srt', Restreamer.data.options.output.srt);
             }
             else if(Restreamer.data.options.output.type == 'hls') {
+                command = new FfmpegCommand(rtmpUrl, {
+                    stdoutLines: 1
+                });
+    
+                Restreamer.addStreamOptions(command, 'global', null);
+                Restreamer.addStreamOptions(command, 'video', null);
                 Restreamer.addStreamOptions(command, 'hls', Restreamer.data.options.output.hls);
             }
             else {
+                command = new FfmpegCommand(rtmpUrl, {
+                    stdoutLines: 1
+                });
+    
+                Restreamer.addStreamOptions(command, 'global', null);
+                Restreamer.addStreamOptions(command, 'video', null);
                 Restreamer.addStreamOptions(command, 'rtmp', null);
             }
 
             // add outputs to the ffmpeg stream
             command.output(streamUrl);
+            logger.debug('FFmpeg command', command.toString());
             probePromise = Restreamer.probeStream(rtmpUrl, streamType)
         }
 
